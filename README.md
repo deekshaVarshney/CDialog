@@ -1,1 +1,1 @@
-# dialog-generation
+# CDialog

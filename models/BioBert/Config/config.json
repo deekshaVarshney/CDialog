@@ -1,0 +1,6 @@
+{
+    "num_hidden_layers": 2,
+    "vocab_size": 50000,
+    "hidden_size": 512,
+    "num_attention_heads": 8
+}

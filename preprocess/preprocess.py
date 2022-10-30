@@ -12,13 +12,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--encoder_size', default=400, type=int, required=False)
 parser.add_argument('--decoder_size', default=100, type=int, required=False)
 parser.add_argument('--datapath', default='Data/Ext_data/', type=str, required=False)
-# parser.add_argument('--Icliniq_datapath', default='MedDialogCorpus/Icliniq/', type=str, required=False)
 parser.add_argument('--json_datapath', default='Data/json_files/', type=str, required=False)
 parser.add_argument('--save', default='preprocessed_data/data', type=str, required=False)
 
 args = parser.parse_args()
 
-# tokenizer = BertTokenizer.from_pretrained("bert-base-chinese")
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', \
                                           never_split=("[UNK]", "[SEP]", "[PAD]", "[CLS]", "[MASK]", "[END]"))
 
@@ -33,13 +31,7 @@ mini = 1e5
 def match(sent1, sent2):
     sent1 = sent1[8:].split()
     sent2 = sent2.split()
-    # print('ss1',sent1)
-    # print('ss2',sent2)
-
     common = set(sent1).intersection(set(sent2))
-    # print('c',common)
-    # print(len(common)/(len(set(sent1))))
-    #
     if len(common) / len(set(sent1)) > 0.90:
         # print('True')
         return True
@@ -85,9 +77,6 @@ def clean_dataset(dataset_file, json_file):
         sen = lst[2] .strip() + ": " + lst[5].strip()
         sen = sen.strip()
         last_list.append(sen)
-        #print(len(Dialog_list))
-    # print(len(Dialog_list))
-    # print(Dialog_list[1])
     last_dialog["Turn"] = int(int(last_turn)/2)
     last_dialog["Id"] = int(id)
     last_dialog["Dialogue"] = last_list[:]
@@ -109,12 +98,9 @@ def clean_dataset(dataset_file, json_file):
 def seq2token_ids(source_seqs, target_seq):
     encoder_input = []
     for source_seq in source_seqs:
-        # print('sss',source_seq[8:])
         encoder_input += tokenizer.tokenize(source_seq[8:]) + ["[SEP]"]
 
     decoder_input = ["[CLS]"] + tokenizer.tokenize(target_seq[7:])  # 去掉 xx：
-    # print(encoder_input)
-    # print(decoder_input)
 
     if len(encoder_input) > MAX_ENCODER_SIZE - 1:
         if "[SEP]" in encoder_input[-MAX_ENCODER_SIZE:-1]:
@@ -166,10 +152,6 @@ def make_dataset(data, file_name='train_data.pth'):
         # print(count)
         d_len = len(d)
         for i in range(d_len // 2):
-            # print('src', d[:2 * i + 1])
-            # print('trg', d[2 * i + 1])
-               
-            #src = d[:2*i+1]
             encoder_input, decoder_input, mask_encoder_input, mask_decoder_input = seq2token_ids(d[:2 * i + 1],
                                                                                                  d[2 * i + 1])
             train_data.append((encoder_input,

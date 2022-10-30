@@ -94,10 +94,8 @@ def clean_dataset(dataset_file, json_file):
 
 
 def seq2token_ids(source_seqs, target_seq):
-    # 可以尝试对source_seq进行切分
     encoder_input = []
     for source_seq in source_seqs:
-        # 去掉 xx：
         # print('sss',source_seq[8:])
         encoder_input += tokenizer.tokenize(source_seq[8:]) + ["[SEP]"]
 
@@ -105,7 +103,6 @@ def seq2token_ids(source_seqs, target_seq):
     # print(encoder_input)
     # print(decoder_input)
 
-    # 设置不得超过 MAX_ENCODER_SIZE 大小
     if len(encoder_input) > MAX_ENCODER_SIZE - 1:
         if "[SEP]" in encoder_input[-MAX_ENCODER_SIZE:-1]:
             idx = encoder_input[:-1].index("[SEP]", -(MAX_ENCODER_SIZE - 1))
@@ -212,12 +209,8 @@ def get_splited_data_by_file(dataset_file):
 
 
 path1 = 'Data/Ext_data/'
-# path2 = 'MedDialogCorpus/Icliniq/'
 path3 = 'Data/json_files_biobert/'
 
-# path1 = 'covid_data/HCM/'
-# path2 = 'covid_data/Icliniq/'
-# path3 = 'covid_data/json_files/'
 
 total = 0
 
@@ -230,13 +223,6 @@ for root, dirnames, filenames in os.walk(path1):
         json_file = os.path.join(os.path.abspath('../Ext_CDialog/'), os.path.join(path3, new_filename))
         nos = clean_dataset(dataset_file, json_file)
 
-# for root, dirnames, filenames in os.walk(path2):
-#     for filename in filenames:
-#         dataset_file = os.path.join(os.path.abspath('../src/'), os.path.join(path2, filename))
-#         new_filename = filename.split('.txt')[0] + '.json'
-#         json_file = os.path.join(os.path.abspath('../src/'), os.path.join(path3, new_filename))
-#         nos = clean_dataset(dataset_file, json_file)
-
 for root, dirnames, filenames in os.walk(path3):
     for filename in filenames:
         json_file = os.path.join(os.path.abspath('../Ext_CDialog/'), os.path.join(path3, filename))
@@ -244,11 +230,6 @@ for root, dirnames, filenames in os.walk(path3):
         tot_data[0].extend(temp[0])
         tot_data[1].extend(temp[1])
         tot_data[2].extend(temp[2])
-
-# print('Total_data_crawl',total)
-
-
-# data = get_splited_data_by_file(json_file)
 
 data = tot_data
 

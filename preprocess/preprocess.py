@@ -107,10 +107,8 @@ def clean_dataset(dataset_file, json_file):
 
 
 def seq2token_ids(source_seqs, target_seq):
-    # 可以尝试对source_seq进行切分
     encoder_input = []
     for source_seq in source_seqs:
-        # 去掉 xx：
         # print('sss',source_seq[8:])
         encoder_input += tokenizer.tokenize(source_seq[8:]) + ["[SEP]"]
 
@@ -118,7 +116,6 @@ def seq2token_ids(source_seqs, target_seq):
     # print(encoder_input)
     # print(decoder_input)
 
-    # 设置不得超过 MAX_ENCODER_SIZE 大小
     if len(encoder_input) > MAX_ENCODER_SIZE - 1:
         if "[SEP]" in encoder_input[-MAX_ENCODER_SIZE:-1]:
             idx = encoder_input[:-1].index("[SEP]", -(MAX_ENCODER_SIZE - 1))

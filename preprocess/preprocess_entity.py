@@ -167,10 +167,8 @@ def clean_dataset(dataset_file, json_file):
 
 
 def seq2token_ids(source_seqs, target_seq):
-    # ?????source_seq????
     encoder_input = []
     for source_seq in source_seqs:
-        # ?? xx:
         # print('sss',source_seq[8:])
         encoder_input += tokenizer.tokenize(source_seq[8:]) + ["[SEP]"]
 
@@ -178,7 +176,6 @@ def seq2token_ids(source_seqs, target_seq):
     # print(encoder_input)
     # print(decoder_input)
 
-    # ?????? MAX_ENCODER_SIZE ??
     if len(encoder_input) > MAX_ENCODER_SIZE - 1:
         if "[SEP]" in encoder_input[-MAX_ENCODER_SIZE:-1]:
             idx = encoder_input[:-1].index("[SEP]", -(MAX_ENCODER_SIZE - 1))
@@ -233,36 +230,21 @@ def make_dataset(data, entity, file_name='train_data.pth'):
         e_len = len(e)
 
         for i in range(d_len // 2):
-            # print('src', d[:2 * i + 1])
-            # print('trg', d[2 * i + 1])
-
-            # src = d[:2*i+1]
             lst1 = d[:2 * i + 1]
             lst2 = e[:2 * i + 1]
-            src = []
-            # print(len(lst1), " and ", len(lst2))
-            # print(lst1, " and ", lst2)
             for j in range(len(lst1)):
-                # sen = lst1[j].strip + " " + lst2[j].strip
-                # sen = sen.strip
                 if lst2[j] != '':
                     src.append(lst1[j] + " " + lst2[j])
                 else:
                     src.append(lst1[j])
 
-            # print("src: ", src)
-            # print(d[:2 * i + 1])
-            # print(d[2 * i + 1])
-            # encoder_input, decoder_input, mask_encoder_input, mask_decoder_input = seq2token_ids(d[:2 * i + 1],
-            #                                                                                      d[2 * i + 1])
             encoder_input, decoder_input, mask_encoder_input, mask_decoder_input = seq2token_ids(src,
                                                                                                  d[2 * i + 1])
             train_data.append((encoder_input,
                                decoder_input,
                                mask_encoder_input,
                                mask_decoder_input))
-        # break
-        count += 1
+#         count += 1
 
     encoder_input, \
     decoder_input, \
@@ -285,20 +267,6 @@ def get_splited_data_by_file(dataset_file):
     with open(dataset_file, "r", encoding='utf-8') as f:
         json_data = f.read()
         data = json.loads(json_data)
-
-    # for d in data[:]:
-
-    # lst = []
-    # dialogue_len = 0
-    # for x in d['Dialogue']:
-    #     lst = x.split()
-    #     dialogue_len += 1
-    #     if len(lst) < 4:
-    #         if dialogue_len == 2:
-    #             data.remove(d)
-    #             break
-    # else:
-    #     d['Dialogue'] = d['Dialogue'][:dialogue_len-2]
 
     total_id_num = len(data)
     validate_idx = int(float(total_id_num) * 8 / 10)
@@ -337,14 +305,6 @@ for root, dirnames, filenames in os.walk(path1):
         json_file = os.path.join(os.path.abspath('../Ext_CDialog/'), os.path.join(path2, new_filename))
         nos = clean_entity(dataset_file, json_file)
 
-# for root, dirnames, filenames in os.walk(path2):
-#     for filename in filenames:
-#         dataset_file = os.path.join(os.path.abspath('../src/'), os.path.join(path2, filename))
-#         new_filename = filename.split('.txt')[0] + '.json'
-#         json_file = os.path.join(os.path.abspath('../src/'), os.path.join(path3, new_filename))
-#         nos = clean_dataset(dataset_file, json_file)
-
-#
 for root, dirnames, filenames in os.walk(path3):
     for filename in filenames:
         json_file = os.path.join(os.path.abspath('../Ext_CDialog/'), os.path.join(path3, filename))
@@ -378,35 +338,6 @@ print(len(entity[0]))
 print(len(entity[1]))
 print(len(entity[2]))
 
-# count = 0
-# for d, e in zip(data[0], entity[0]):
-#     # print(count)
-#     if count > 5:
-#         break
-#     count += 1
-#     d_len = len(d)
-#     e_len = len(e)
-#     for i in range(d_len // 2):
-#         # print('src', d[:2 * i + 1])
-#         # print('trg', d[2 * i + 1])
-#
-#         lst1 = d[:2 * i + 1]
-#         lst2 = e[:2 * i + 1]
-#         src = []
-#         sen = ""
-#         print(len(lst1), " and ", len(lst2))
-#         print(lst1, " and ", lst2)
-#         for j in range(len(lst1)):
-#             # sen = lst1[j].strip + " " + lst2[j].strip
-#             # sen = sen.strip
-#             if lst2[j] != '':
-#                 src.append(lst1[j] + " " + lst2[j])
-#             else:
-#                 src.append(lst1[j])
-#
-#         print("src: ", src)
-#         print(d[:2 * i + 1])
-#         print(d[2 * i + 1])
 
 print(f'Process the train dataset')
 make_dataset(data[0],entity[0], args.save + '/train_data.pkl')

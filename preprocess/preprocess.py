@@ -202,21 +202,6 @@ def get_splited_data_by_file(dataset_file):
         json_data = f.read()
         data = json.loads(json_data)
 
-
-    #for d in data[:]:
-
-        # lst = []
-        # dialogue_len = 0
-        # for x in d['Dialogue']:
-        #     lst = x.split()
-        #     dialogue_len += 1
-        #     if len(lst) < 4:
-        #         if dialogue_len == 2:
-        #             data.remove(d)
-        #             break
-                # else:
-                #     d['Dialogue'] = d['Dialogue'][:dialogue_len-2]
-
     total_id_num = len(data)
     validate_idx = int(float(total_id_num) * 8 / 10)
     test_idx = int(float(total_id_num) * 9 / 10)
@@ -245,14 +230,6 @@ for root, dirnames, filenames in os.walk(path1):
         json_file = os.path.join(os.path.abspath('../Ext_CDialog/'), os.path.join(path3, new_filename))
         nos = clean_dataset(dataset_file, json_file)
 
-# for root, dirnames, filenames in os.walk(path2):
-#     for filename in filenames:
-#         dataset_file = os.path.join(os.path.abspath('../src/'), os.path.join(path2, filename))
-#         new_filename = filename.split('.txt')[0] + '.json'
-#         json_file = os.path.join(os.path.abspath('../src/'), os.path.join(path3, new_filename))
-#         nos = clean_dataset(dataset_file, json_file)
-
-#
 for root,dirnames,filenames in os.walk(path3):
     for filename in filenames:
         json_file = os.path.join(os.path.abspath('../Ext_CDialog/'), os.path.join(path3,filename))

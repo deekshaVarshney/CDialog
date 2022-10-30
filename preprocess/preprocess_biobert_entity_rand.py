@@ -21,13 +21,8 @@ mini = 1e5
 def match(sent1, sent2):
     sent1 = sent1[8:].split()
     sent2 = sent2.split()
-    # print('ss1',sent1)
-    # print('ss2',sent2)
-
     common = set(sent1).intersection(set(sent2))
-    # print('c',common)
-    # print(len(common)/(len(set(sent1))))
-    #
+
     if len(common) / len(set(sent1)) > 0.90:
         # print('True')
         return True
@@ -73,17 +68,11 @@ def clean_dataset(dataset_file, json_file):
         sen = lst[2] .strip() + ": " + lst[5].strip()
         sen = sen.strip()
         last_list.append(sen)
-        #print(len(Dialog_list))
-    # print(len(Dialog_list))
-    # print(Dialog_list[1])
+
     last_dialog["Turn"] = int(int(last_turn)/2)
     last_dialog["Id"] = int(id)
     last_dialog["Dialogue"] = last_list[:]
     Dialog_list.append(last_dialog.copy())
-
-
-    # print(Dialog_list[0])
-    # print(last_list)
 
     print(len(Dialog_list))
 
@@ -101,9 +90,7 @@ def seq2token_ids(source_seqs, target_seq):
         encoder_input += tokenizer.tokenize(source_seq[8:]) + ["[SEP]"]
 
     decoder_input = ["[CLS]"] + tokenizer.tokenize(target_seq[7:])  # ?? xx:
-    # print(encoder_input)
-    # print(decoder_input)
-
+ 
     if len(encoder_input) > MAX_ENCODER_SIZE - 1:
         if "[SEP]" in encoder_input[-MAX_ENCODER_SIZE:-1]:
             idx = encoder_input[:-1].index("[SEP]", -(MAX_ENCODER_SIZE - 1))
@@ -158,28 +145,16 @@ def make_dataset(data, entity, file_name='train_data.pth'):
         e_len = len(e)
 
         for i in range(d_len // 2):
-            # print('src', d[:2 * i + 1])
-            # print('trg', d[2 * i + 1])
-
-            # src = d[:2*i+1]
             lst1 = d[:2 * i + 1]
             lst2 = e[:2 * i + 1]
             src = []
-            # print(len(lst1), " and ", len(lst2))
-            # print(lst1, " and ", lst2)
+
             for j in range(len(lst1)):
-                # sen = lst1[j].strip + " " + lst2[j].strip
-                # sen = sen.strip
+
                 if lst2[j] != '':
                     src.append(lst1[j] + " " + lst2[j])
                 else:
                     src.append(lst1[j])
-
-            # print("src: ", src)
-            # print(d[:2 * i + 1])
-            # print(d[2 * i + 1])
-            # encoder_input, decoder_input, mask_encoder_input, mask_decoder_input = seq2token_ids(d[:2 * i + 1],
-            #                                                                                      d[2 * i + 1])
             encoder_input, decoder_input, mask_encoder_input, mask_decoder_input = seq2token_ids(src,
                                                                                                  d[2 * i + 1])
             train_data.append((encoder_input,
@@ -218,7 +193,6 @@ def get_splited_data_by_file(dataset_file):
     datasets[1] = [d['Dialogue'] for d in data[validate_idx:test_idx]]
     datasets[2] = [d['Dialogue'] for d in data[test_idx:]]
 
-    # print(datasets)
     return datasets
 
 

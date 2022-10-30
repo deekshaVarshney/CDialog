@@ -95,10 +95,8 @@ def clean_dataset(dataset_file, json_file):
 
 
 def seq2token_ids(source_seqs, target_seq):
-    # ?????source_seq????
     encoder_input = []
     for source_seq in source_seqs:
-        # ?? xx:
         # print('sss',source_seq[8:])
         encoder_input += tokenizer.tokenize(source_seq[8:]) + ["[SEP]"]
 
@@ -106,7 +104,6 @@ def seq2token_ids(source_seqs, target_seq):
     # print(encoder_input)
     # print(decoder_input)
 
-    # ?????? MAX_ENCODER_SIZE ??
     if len(encoder_input) > MAX_ENCODER_SIZE - 1:
         if "[SEP]" in encoder_input[-MAX_ENCODER_SIZE:-1]:
             idx = encoder_input[:-1].index("[SEP]", -(MAX_ENCODER_SIZE - 1))
@@ -149,36 +146,6 @@ def seq2token_ids(source_seqs, target_seq):
 
     return encoder_input, decoder_input, mask_encoder_input, mask_decoder_input
 
-
-# def make_dataset(data, file_name='train_data.pth'):
-#     train_data = []
-#     count = 0
-#     for d in data:
-#         # print(count)
-#         d_len = len(d)
-#         for i in range(d_len // 2):
-#             encoder_input, decoder_input, mask_encoder_input, mask_decoder_input = seq2token_ids(d[:2 * i + 1],
-#                                                                                                  d[2 * i + 1])
-#             train_data.append((encoder_input,
-#                                decoder_input,
-#                                mask_encoder_input,
-#                                mask_decoder_input))
-#         # break
-#         count += 1
-#
-#     encoder_input, \
-#     decoder_input, \
-#     mask_encoder_input, \
-#     mask_decoder_input = zip(*train_data)
-#
-#     encoder_input = torch.stack(encoder_input)
-#     decoder_input = torch.stack(decoder_input)
-#     mask_encoder_input = torch.stack(mask_encoder_input)
-#     mask_decoder_input = torch.stack(mask_decoder_input)
-#
-#     train_data = [encoder_input, decoder_input, mask_encoder_input, mask_decoder_input]
-#
-#     torch.save(train_data, file_name)
 
 def make_dataset(data, entity, file_name='train_data.pth'):
     train_data = []
@@ -243,18 +210,6 @@ def get_splited_data_by_file(dataset_file):
         json_data = f.read()
         data = json.loads(json_data)
 
-    # for d in data[:]:
-    #     lst = []
-    #     dialogue_len = 0
-    #     for x in d['Dialogue']:
-    #         lst = x.split()
-    #         dialogue_len += 1
-    #         if len(lst) < 4:
-    #             if dialogue_len == 2:
-    #                 data.remove(d)
-    #             # else:
-                #     d['Dialogue'] = d['Dialogue'][:dialogue_len - 2]
-
     total_id_num = len(data)
     validate_idx = int(float(total_id_num) * 8 / 10)
     test_idx = int(float(total_id_num) * 9 / 10)
@@ -268,12 +223,7 @@ def get_splited_data_by_file(dataset_file):
 
 
 path1 = 'Data/Ext_data/'
-# path2 = 'MedDialogCorpus/Icliniq/'
 path3 = 'Data/json_files_biobert/'
-
-# path1 = 'covid_data/HCM/'
-# path2 = 'covid_data/Icliniq/'
-# path3 = 'covid_data/json_files/'
 
 total = 0
 

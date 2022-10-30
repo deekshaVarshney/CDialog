@@ -34,13 +34,8 @@ mini = 1e5
 def match(sent1, sent2):
     sent1 = sent1[8:].split()
     sent2 = sent2.split()
-    # print('ss1',sent1)
-    # print('ss2',sent2)
 
     common = set(sent1).intersection(set(sent2))
-    # print('c',common)
-    # print(len(common)/(len(set(sent1))))
-    #
     if len(common) / len(set(sent1)) > 0.90:
         # print('True')
         return True
@@ -90,20 +85,13 @@ def clean_entity(dataset_file, json_file):
         sen = sen + " " + lst[12].strip()
         sen = sen.strip()
         last_list.append(sen)
-        # print(len(Dialog_list))
-    # print(len(Dialog_list))
-    # print(Dialog_list[1])
+
     last_dialog["Turn"] = int(int(last_turn) / 2)
     last_dialog["Id"] = int(id)
     last_dialog["Dialogue"] = last_list[:]
     Entity_list.append(last_dialog.copy())
+#     print(len(Entity_list))
 
-    # print(Dialog_list[0])
-    # print(last_list)
-
-    print(len(Entity_list))
-
-    # print("Total Cases: ", json_file.split('.')[0].split('/')[-1], id)
     json.dump(Entity_list, f_json, indent=4)
     f_in.close()
     f_json.close()
@@ -146,20 +134,15 @@ def clean_dataset(dataset_file, json_file):
         sen = lst[2].strip() + ": " + lst[5].strip()
         sen = sen.strip()
         last_list.append(sen)
-        # print(len(Dialog_list))
-    # print(len(Dialog_list))
-    # print(Dialog_list[1])
+
     last_dialog["Turn"] = int(int(last_turn) / 2)
     last_dialog["Id"] = int(id)
     last_dialog["Dialogue"] = last_list[:]
     Dialog_list.append(last_dialog.copy())
 
-    # print(Dialog_list[0])
-    # print(last_list)
+#     print(len(Dialog_list))
 
-    print(len(Dialog_list))
 
-    # print("Total Cases: ", json_file.split('.')[0].split('/')[-1], id)
     json.dump(Dialog_list, f_json, indent=4)
     f_in.close()
     f_json.close()
@@ -169,12 +152,9 @@ def clean_dataset(dataset_file, json_file):
 def seq2token_ids(source_seqs, target_seq):
     encoder_input = []
     for source_seq in source_seqs:
-        # print('sss',source_seq[8:])
         encoder_input += tokenizer.tokenize(source_seq[8:]) + ["[SEP]"]
 
     decoder_input = ["[CLS]"] + tokenizer.tokenize(target_seq[7:])  # ?? xx:
-    # print(encoder_input)
-    # print(decoder_input)
 
     if len(encoder_input) > MAX_ENCODER_SIZE - 1:
         if "[SEP]" in encoder_input[-MAX_ENCODER_SIZE:-1]:

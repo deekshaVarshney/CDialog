@@ -16,8 +16,6 @@ parser.add_argument('--json_datapath', default='Data/json_files/', type=str, req
 parser.add_argument('--save', default='preprocessed_data/data_random', type=str, required=False)
 parser.add_argument('--merged_datapath', default='Data_entity/json_files/merged/merged_file.json', type=str, required=False)
 args = parser.parse_args()
-
-# tokenizer = BertTokenizer.from_pretrained("bert-base-chinese")
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', \
                                           never_split=("[UNK]", "[SEP]", "[PAD]", "[CLS]", "[MASK]", "[END]"))
 
@@ -32,13 +30,9 @@ mini = 1e5
 def match(sent1, sent2):
     sent1 = sent1[8:].split()
     sent2 = sent2.split()
-    # print('ss1',sent1)
-    # print('ss2',sent2)
+
 
     common = set(sent1).intersection(set(sent2))
-    # print('c',common)
-    # print(len(common)/(len(set(sent1))))
-    #
     if len(common) / len(set(sent1)) > 0.90:
         # print('True')
         return True
@@ -106,18 +100,14 @@ def clean_dataset(dataset_file, json_file):
 
 
 def seq2token_ids(source_seqs, target_seq):
-    # 可以尝试对source_seq进行切分
+
     encoder_input = []
     for source_seq in source_seqs:
-        # 去掉 xx：
-        # print('sss',source_seq[8:])
+
         encoder_input += tokenizer.tokenize(source_seq[8:]) + ["[SEP]"]
 
     decoder_input = ["[CLS]"] + tokenizer.tokenize(target_seq[7:])  # 去掉 xx：
-    # print(encoder_input)
-    # print(decoder_input)
 
-    # 设置不得超过 MAX_ENCODER_SIZE 大小
     if len(encoder_input) > MAX_ENCODER_SIZE - 1:
         if "[SEP]" in encoder_input[-MAX_ENCODER_SIZE:-1]:
             idx = encoder_input[:-1].index("[SEP]", -(MAX_ENCODER_SIZE - 1))
@@ -168,8 +158,6 @@ def make_dataset(data, file_name='train_data.pth'):
         # print(count)
         d_len = len(d)
         for i in range(d_len // 2):
-            # print('src', d[:2 * i + 1])
-            # print('trg', d[2 * i + 1])
 
             encoder_input, decoder_input, mask_encoder_input, mask_decoder_input = seq2token_ids(d[:2 * i + 1],
                                                                                                  d[2 * i + 1])
@@ -202,18 +190,6 @@ def get_splited_data_by_file(dataset_file):
         json_data = f.read()
         data = json.loads(json_data)
 
-    # for d in data[:]:
-    #     lst = []
-    #     dialogue_len = 0
-    #     for x in d['Dialogue']:
-    #         lst = x.split()
-    #         dialogue_len += 1
-    #         if len(lst) < 4:
-    #             if dialogue_len == 2:
-    #                 data.remove(d)
-                # else:
-                #     d['Dialogue'] = d['Dialogue'][:dialogue_len-2]
-
     total_id_num = len(data)
     validate_idx = int(float(total_id_num) * 8 / 10)
     test_idx = int(float(total_id_num) * 9 / 10)
@@ -226,56 +202,15 @@ def get_splited_data_by_file(dataset_file):
     return datasets
 
 
-# path1 = args.datapath
-# # path2 = args.Icliniq_datapath
-# path3 = args.json_datapath
-# total = 0
-#
 tot_data = [[], [], []]
-#
-# for root, dirnames, filenames in os.walk(path1):
-#     for filename in filenames:
-#         dataset_file = os.path.join(os.path.abspath('../Ext_CDialog/'), os.path.join(path1, filename))
-#         new_filename = filename.split('.csv')[0] + '.json'
-#         json_file = os.path.join(os.path.abspath('../Ext_CDialog/'), os.path.join(path3, new_filename))
-#         nos = clean_dataset(dataset_file, json_file)
-#
-# # for root, dirnames, filenames in os.walk(path2):
-# #     for filename in filenames:
-# #         dataset_file = os.path.join(os.path.abspath('../src/'), os.path.join(path2, filename))
-# #         new_filename = filename.split('.txt')[0] + '.json'
-# #         json_file = os.path.join(os.path.abspath('../src/'), os.path.join(path3, new_filename))
-# #         nos = clean_dataset(dataset_file, json_file)
-#
-# #
-# # for root,dirnames,filenames in os.walk(path3):
-# #     for filename in filenames:
-# #         json_file = os.path.join(os.path.abspath('../src/'), os.path.join(path3,filename))
-# #         temp = get_splited_data_by_file(json_file)
-# #         tot_data[0].extend(temp[0])
-# #         tot_data[1].extend(temp[1])
-# #         tot_data[2].extend(temp[2])
-#
-# result = []
-# for filename in glob.glob("Data/json_files/*.json"):
-#     with open(filename, "r") as infile:
-#         result.extend(json.load(infile))
-#         random.shuffle(result)
+
 
 json_file = args.merged_datapath
-
-# with open(json_file, "w") as outfile:
-#     json.dump(result, outfile)
 
 temp = get_splited_data_by_file(json_file)
 tot_data[0].extend(temp[0])
 tot_data[1].extend(temp[1])
 tot_data[2].extend(temp[2])
-
-# print('Total_data_crawl',total)
-
-
-# data = get_splited_data_by_file(json_file)
 
 data = tot_data
 

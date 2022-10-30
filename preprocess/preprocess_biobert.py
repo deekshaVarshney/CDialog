@@ -20,13 +20,7 @@ mini = 1e5
 def match(sent1, sent2):
     sent1 = sent1[8:].split()
     sent2 = sent2.split()
-    # print('ss1',sent1)
-    # print('ss2',sent2)
-
     common = set(sent1).intersection(set(sent2))
-    # print('c',common)
-    # print(len(common)/(len(set(sent1))))
-    #
     if len(common) / len(set(sent1)) > 0.90:
         # print('True')
         return True
@@ -72,9 +66,7 @@ def clean_dataset(dataset_file, json_file):
         sen = lst[2] .strip() + ": " + lst[5].strip()
         sen = sen.strip()
         last_list.append(sen)
-        #print(len(Dialog_list))
-    # print(len(Dialog_list))
-    # print(Dialog_list[1])
+
     last_dialog["Turn"] = int(int(last_turn)/2)
     last_dialog["Id"] = int(id)
     last_dialog["Dialogue"] = last_list[:]

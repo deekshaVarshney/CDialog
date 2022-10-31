@@ -3,7 +3,7 @@
 This is an implementation of our paper: CDialog: A Multi-turn Covid-19 Conversation Dataset for Entity-Aware Dialog Generation
 
 (EMNLP 2022)
-Deeksha Varshney, Aizan Zafar, Niranshu Kumar Beher, Asif Ekbal
+Deeksha Varshney, Aizan Zafar, Niranshu Kumar Behera, Asif Ekbal
 
 # Overview
 

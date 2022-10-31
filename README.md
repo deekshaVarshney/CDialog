@@ -1,6 +1,6 @@
-# CDialog
+# CDialog: A Multi-turn Covid-19 Conversation Dataset for Entity-Aware Dialog Generation
 
-This is an implementation of our paper:
+This is an implementation of our paper: CDialog: A Multi-turn Covid-19 Conversation Dataset for Entity-Aware Dialog Generation
 
 (EMNLP 2022)
 Deeksha Varshney, Aizan Zafar, Niranshu Kumar Beher, Asif Ekbal
@@ -11,6 +11,12 @@ The code and sample data is organized as follows:
 * `data\` : contains the sample data of CDialog
 * `models\` : has the model scripts for BART, Bert and BioBert
 * `preprocess\` : contains the preprocess scripts for each of the model mentioned above
+
+# Environment
+
+To create the cdialog environment, run:
+
+`$ conda create --name cdialog --file cdialog_env.txt`
 
 # Preprocess
 

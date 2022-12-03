@@ -1,9 +1,13 @@
 # CDialog: A Multi-turn Covid-19 Conversation Dataset for Entity-Aware Dialog Generation
+Please find the link to the preprint version of the paper.
+Link: https://drive.google.com/file/d/1peZVaapiDGF5qd54JPggMkyNy7mVF1zh/view?usp=sharing
 
 This is an implementation of our paper: CDialog: A Multi-turn Covid-19 Conversation Dataset for Entity-Aware Dialog Generation
 
 (EMNLP 2022)
 Deeksha Varshney, Aizan Zafar, Niranshu Kumar Behera, Asif Ekbal
+
+For requesting data, kindly fill this form :https://forms.gle/YQfPrYXKgAM5PZnw9
 
 # Overview
 
